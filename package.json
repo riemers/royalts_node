@@ -11,7 +11,8 @@
     "url": "https://github.com/riemers/royalts_node.git"
   },
   "dependencies": {
-    "node-uuid": "~1.4.3"
+    "node-uuid": "~1.4.3",
+    "xmlbuilder": "~2.6.2"
   },
   "keywords": [
     "royalts",
