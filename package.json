@@ -16,7 +16,7 @@
     "profile"
   ],
   "author": "Erik-jan Riemers <riemers@binkey.nl> (http://www.bytework.eu)",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/riemers/royalts_node/issues"
   },
