@@ -1,6 +1,11 @@
 var builder = require('xmlbuilder');
 var uuid = require('node-uuid');
-var dateFormat = require('dateformat');
+var moment = require('moment');
+
+// default settings per object type
+// folder
+
+
 
 function xmlobject(objectid, key, value, options) {
     var xml = builder.create('KeyValuePairs', options)
@@ -24,23 +29,21 @@ module.exports = {
             .end({ pretty: true});
         return(xml);
     },
-    folder: function(parentguid, name) {
-        //console.log("folder: " + name);
+    folder: function(parentguid, name, farray) {
         var guid = uuid.v4();
-        var date = dateFormat(new Date(), "yyyy/mm/dd H:MM:ss");
+        var date = moment().format('YYYY/mm/DD H:MM:ss');
         var xml = xmlobject(guid, 'RoyalObjectType', 'RoyalFolder');
+        //var array = farray;
         var array = [
             {name: 'ID', value: guid},
             {name: 'Modified', value: date},
             {name: 'Name', value: name},
             {name: 'Created', value: date},
-            {name: 'IsExpanded', value: 'False'},
-            {name: 'CredentialMode', value: '3'},
-            {name: 'CredentialAutologon', value: 'True'},
-            {name: 'CredentialFromParent', value: 'True'},
             {name: 'ParentID', value: parentguid}
         ];
-        array.forEach(function(keypair) {
+        console.log(array,farray);
+        var allarray = array.concat(farray);
+        allarray.forEach(function(keypair) {
             xml = xml + '\n' + xmlobject(guid, keypair['name'], keypair['value'], {headless: true});
         });
         return(xml);

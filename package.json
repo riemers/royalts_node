@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "node-uuid": "~1.4.3",
-    "xmlbuilder": "~2.6.2"
+    "xmlbuilder": "~2.6.2",
+    "moment": "~2.10.3"
   },
   "keywords": [
     "royalts",
