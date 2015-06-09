@@ -4,10 +4,7 @@ var js2xmlparser = require('js2xmlparser');
 var rtsd = require('./objectdefaults');
 
 module.exports = {
-    //guid: function() {
-    //    return(uuid.v4());
-    //},
-    object: function(parentguid, name, type) {
+    object: function(parentguid, name, type, cb) {
         var guid = uuid.v4();
         var date = moment().format('YYYY/mm/DD H:MM:ss');
 
@@ -27,9 +24,11 @@ module.exports = {
         allarray.forEach(function(keypair) {
             jsonObj.KeyValuePairs.push ({ "ObjectID": guid, "Key": keypair['name'], "Value": keypair['value'] });
         });
-        return(jsonObj);
+
+        cb(jsonObj, guid);
+        //return jsonObj;
     },
     generate: function(data) {
-        return(js2xmlparser("NewDataSet", data));
+        return js2xmlparser("NewDataSet", data);
     }
 };
