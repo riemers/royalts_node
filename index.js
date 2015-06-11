@@ -20,15 +20,21 @@ module.exports = {
             {name: 'ParentID', value: parentguid}
         ];
         var allarray = array.concat(rtsd[type]);
-        //console.log(allarray);
         allarray.forEach(function(keypair) {
             jsonObj.KeyValuePairs.push ({ "ObjectID": guid, "Key": keypair['name'], "Value": keypair['value'] });
         });
 
         cb(jsonObj, guid);
-        //return jsonObj;
+
     },
     generate: function(data) {
+        return js2xmlparser("NewDataSet", data);
+    },
+    savegenerate: function(data,res,filename) {
+        if (typeof filename =="undefined") filename = "royaldocument";
+        filename = filename + '.rtsz';
+        res.setHeader("Content-Type", "application/x-gzip");
+        res.setHeader('Content-disposition', 'attachment; filename=' + filename);
         return js2xmlparser("NewDataSet", data);
     }
 };
