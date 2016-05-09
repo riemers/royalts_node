@@ -11,10 +11,10 @@
     "url": "https://github.com/riemers/royalts_node.git"
   },
   "dependencies": {
+    "js2xmlparser": "^1.0.0",
+    "moment": "^2.13.0",
     "node-uuid": "~1.4.3",
-    "xmlbuilder": "~2.6.2",
-    "moment": "~2.10.3",
-    "js2xmlparser": "~0.1.9"
+    "xmlbuilder": "^8.2.2"
   },
   "keywords": [
     "royalts",

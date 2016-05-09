@@ -4,7 +4,7 @@ objectdefaults.RoyalSSHConnection = [
     {name: 'IsAdHoc', value: 'False'},
     {name: 'IsConnectionTemplate', value: 'False'},
     {name: 'InitialStateOfKeyboardScrolling', value: 'True'},
-    {name: 'CredentialFromParen', value: 'True'},
+    {name: 'CredentialFromParent', value: 'True'},
     {name: 'HistoryMaxLength'}
 ];
 
