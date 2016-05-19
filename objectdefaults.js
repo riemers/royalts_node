@@ -1,4 +1,4 @@
-var objectdefaults = {};
+const objectdefaults = {};
 
 objectdefaults.RoyalSSHConnection = [
     {name: 'IsAdHoc', value: 'False'},
@@ -23,4 +23,4 @@ objectdefaults.RoyalDocument = [
     {name: 'CredentialMode', value: '4'}
 ];
 
-module.exports = objectdefaults;
+export default objectdefaults;
