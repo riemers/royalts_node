@@ -1,20 +1,33 @@
 {
   "name": "royalts",
-  "version": "1.0.2",
+  "version": "2.0.2",
   "description": "Royal TS module to create profiles easily",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "npm run build",
+    "prepublish": "npm run build",
+    "build": "babel src --out-dir lib --copy-files",
+    "build-watch": "babel src --watch --out-dir lib --copy-files"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/riemers/royalts_node.git"
   },
   "dependencies": {
-    "js2xmlparser": "^1.0.0",
     "moment": "^2.13.0",
-    "node-uuid": "~1.4.3",
-    "xmlbuilder": "^8.2.2"
+    "node-uuid": "~1.4.3"
+  },
+  "devDependencies": {
+    "eslint": "^2.7.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-jsx-a11y": "^1.0.3",
+    "babel-cli": "^6.7.7",
+    "babel-core": "^6.7.7",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-syntax-export-extensions": "^6.5.0",
+    "babel-plugin-transform-export-extensions": "^6.5.0",
+    "babel-preset-es2015-node-auto": "0.0.5",
+    "babel-preset-stage-0": "^6.5.0"
   },
   "keywords": [
     "royalts",
