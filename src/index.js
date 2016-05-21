@@ -3,36 +3,47 @@ import moment from 'moment';
 import { v4 as generateId } from 'node-uuid';
 
 export default class RoyalDocument {
-  constructor(raw) {
-    this.raw = raw;
+  constructor() {
+    this.raw = {};
     this.entities = [];
     this.previousId = null;
+    this.currentParent = null;
   }
 
   /**
    *
+   * @param raw
+   */
+  setRaw(raw) {
+    this.raw = raw;
+    this.entities = [];
+    this.previousId = null;
+    this.currentParent = null;
+  }
+
+  /**
+   * Converts an entity into a clean object with defaults
    * @param entity
    */
   addEntity(entity) {
     // validate props
     if (!entity.Type) throw new Error('A type is required for entity');
     if (!entity.Name) throw new Error('A name is required for entity');
-    const entityImmutable = Object.assign({}, entity);
-    const { Type } = entityImmutable;
     const id = generateId();
-    delete entityImmutable.Children;
+    const imuEntity = Object.assign({}, entity);
+    delete imuEntity.Children;
     this.entities.push(
       Object.assign(
         this.defaultProperties(),
-        defaults[Type] || {},
-        { ID: id }, entityImmutable
+        defaults[imuEntity.Type] || {},
+        { ID: id }, imuEntity
       )
     );
     this.previousId = id;
   }
 
-	/**
-   *
+  /**
+   * Add default props that all entities require.
    * @returns {{Modified, Created}}
    */
   defaultProperties() {
@@ -47,7 +58,7 @@ export default class RoyalDocument {
     return defaultProps;
   }
 
-	/**
+  /**
    *
    * @param children
    * @param root
@@ -66,25 +77,6 @@ export default class RoyalDocument {
   }
 
   /**
-   * Returns the XML string of the royal doc
-   */
-  toString() {
-    if (this.raw.Type !== 'RoyalDocument') {
-      throw new Error('The first item in a royal document must be of type \'RoyalDocument\'');
-    }
-
-    const xmlHeader = '<?xml version="1.0" encoding="utf-8"?>\r\n';
-    const prefix = '<RTSZDocument>';
-    const postfix = '</RTSZDocument>';
-
-    this.addEntity(this.raw);
-    this.iterateChildren(this.raw.Children, true);
-
-    const entitiesStr = this.entities.map(RoyalDocument.stringEntity).join('');
-    return `${xmlHeader}${prefix}\r\n${entitiesStr}${postfix}`;
-  }
-
-	/**
    *
    * @param entity
    * @returns {string}
@@ -98,6 +90,24 @@ export default class RoyalDocument {
       entityKeyString += `        <${key}>${entity[key]}</${key}>\r\n`;
     }
     return `    <${entity.Type}>\r\n${entityKeyString}    </${entity.Type}>\r\n`;
+  }
+
+  /**
+   * Returns the XML string of the royal doc
+   */
+  toString() {
+    if (this.raw.Type !== 'RoyalDocument') {
+      throw new Error('The first item in a royal document must be of type \'RoyalDocument\'');
+    }
+
+    if (!this.entities.length) {
+      this.addEntity(this.raw);
+      if (this.raw.children) this.iterateChildren(this.raw.Children, true);
+    }
+
+    const xmlHeader = '<?xml version="1.0" encoding="utf-8"?>\r\n';
+    const entitiesStr = this.entities.map(RoyalDocument.stringEntity).join('');
+    return `${xmlHeader}<RTSZDocument>\r\n${entitiesStr}</RTSZDocument>`;
   }
 }
 
