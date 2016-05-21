@@ -1,6 +1,6 @@
 {
   "name": "royalts",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Royal TS module to create profiles easily",
   "main": "lib/index.js",
   "scripts": {
