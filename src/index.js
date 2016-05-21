@@ -7,6 +7,7 @@ export default class RoyalDocument {
     this.raw = {};
     this.entities = [];
     this.previousId = null;
+    this.errorEntity = {};
     this.currentParent = null;
   }
 
@@ -18,6 +19,7 @@ export default class RoyalDocument {
     this.raw = raw;
     this.entities = [];
     this.previousId = null;
+    this.errorEntity = {};
     this.currentParent = null;
   }
 
@@ -26,9 +28,18 @@ export default class RoyalDocument {
    * @param entity
    */
   addEntity(entity) {
-    // validate props
-    if (!entity.Type) throw new Error('A type is required for entity');
-    if (!entity.Name) throw new Error('A name is required for entity');
+    if (!entity.Type) {
+      this.errorEntity = entity;
+      delete this.errorEntity.Children;
+      throw new Error('A type is required for entity');
+    }
+
+    if (!entity.Name) {
+      this.errorEntity = entity;
+      delete this.errorEntity.Children;
+      throw new Error('A name is required for entity');
+    }
+
     const id = generateId();
     const imuEntity = Object.assign({}, entity);
     delete imuEntity.Children;
@@ -97,12 +108,14 @@ export default class RoyalDocument {
    */
   toString() {
     if (this.raw.Type !== 'RoyalDocument') {
+      this.errorEntity = this.raw;
+      delete this.errorEntity.Children;
       throw new Error('The first item in a royal document must be of type \'RoyalDocument\'');
     }
 
     if (!this.entities.length) {
       this.addEntity(this.raw);
-      if (this.raw.children) this.iterateChildren(this.raw.Children, true);
+      if (this.raw.Children) this.iterateChildren(this.raw.Children, true);
     }
 
     const xmlHeader = '<?xml version="1.0" encoding="utf-8"?>\r\n';
